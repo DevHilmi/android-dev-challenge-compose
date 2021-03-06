@@ -105,7 +105,6 @@ fun TimerButton(running: Boolean, mainViewModel: MainViewModel) {
         }) {}
 }
 
-
 enum class CountDownType {
     HOURS, MINUTES, SECONDS
 }
