@@ -19,6 +19,8 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -28,7 +30,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.androiddevchallenge.model.MainSurfaceModel
 import com.example.androiddevchallenge.ui.theme.MyTheme
 
 class MainActivity : AppCompatActivity() {
@@ -48,12 +52,13 @@ class MainActivity : AppCompatActivity() {
 fun MyApp() {
     val mainViewModel: MainViewModel = viewModel()
     val mainSurfaceModel: MainSurfaceModel? by mainViewModel.getMainSurfaceModel().observeAsState()
+    mainViewModel.resetTimer()
     Surface(color = MaterialTheme.colors.background) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            CountDownView(
+            CountDownChooserView(
                 mainSurfaceModel?.hour,
                 mainSurfaceModel?.minute,
                 mainSurfaceModel?.second
@@ -65,29 +70,54 @@ fun MyApp() {
 }
 
 @Composable
+fun CountDownChooserView(hour: String?, minute: String?, second: String?) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        CountDownChooserText(message = hour, countDownType = CountDownType.HOURS)
+        CountDownChooserText(message = minute, countDownType = CountDownType.MINUTES)
+        CountDownChooserText(message = second, countDownType = CountDownType.SECONDS)
+    }
+}
+
+@Composable
 fun CountDownView(hour: String?, minute: String?, second: String?) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
-        CountDownText(message = hour, countDownType = CountDownType.HOURS)
-        CountDownText(message = minute, countDownType = CountDownType.MINUTES)
-        CountDownText(message = second, countDownType = CountDownType.SECONDS)
+
     }
 }
 
 @Composable
-fun CountDownText(message: String?, countDownType: CountDownType) {
-    // TODO (hilmi.rizaldi) : Style Countdown & Set Value View
-    Row {
+fun CountDownChooserText(message: String?, countDownType: CountDownType) {
+    Row(modifier = Modifier.padding(16.dp)) {
         message?.let {
-            Text(text = it)
-            val countdownSymbol: String = when (countDownType) {
-                CountDownType.HOURS -> "h"
-                CountDownType.MINUTES -> "m"
-                CountDownType.SECONDS -> "s"
+            val countdownLimit: Int = when (countDownType) {
+                CountDownType.HOURS -> 23
+                CountDownType.MINUTES -> 59
+                CountDownType.SECONDS -> 59
             }
-            Text(text = countdownSymbol)
+            val countdownSymbol: String = when (countDownType) {
+                CountDownType.HOURS -> "hour"
+                CountDownType.MINUTES -> "min"
+                CountDownType.SECONDS -> "second"
+            }
+            Row {
+                Column(
+                    modifier = Modifier
+                        .height(150.dp)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    for (i in 0..countdownLimit) {
+                        Text(text = i.toString())
+                    }
+                }
+                Text(text = countdownSymbol)
+            }
+
         }
     }
 }

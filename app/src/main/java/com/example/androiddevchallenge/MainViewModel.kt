@@ -4,6 +4,7 @@ import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.androiddevchallenge.model.MainSurfaceModel
 
 class MainViewModel : ViewModel() {
 
@@ -14,6 +15,10 @@ class MainViewModel : ViewModel() {
 
     fun getMainSurfaceModel(): LiveData<MainSurfaceModel> {
         return mainSurfaceModel
+    }
+
+    fun resetTimer() {
+        mainSurfaceModel.value = MainSurfaceModel("00", "00", "00")
     }
 
     fun startTimer(hour: Int?, minute: Int?, second: Int?) {
