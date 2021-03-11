@@ -18,7 +18,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun resetTimer() {
-        mainSurfaceModel.value = MainSurfaceModel("00", "00", "00")
+        mainSurfaceModel.value = MainSurfaceModel("00", "00", "00", false)
     }
 
     fun startTimer(hour: Int?, minute: Int?, second: Int?) {
@@ -28,7 +28,7 @@ class MainViewModel : ViewModel() {
             }
 
             override fun onFinish() {
-                mainSurfaceModel.value = MainSurfaceModel("00", "00", "00")
+                mainSurfaceModel.value = MainSurfaceModel("00", "00", "00", false)
             }
         }
         timer.start()
@@ -44,7 +44,7 @@ class MainViewModel : ViewModel() {
         val seconds = (millisecond / SECOND_TO_MILLIS).toInt() % 60
         val minutes = (millisecond / (MINUTE_TO_MILLIS) % 60)
         val hours = (millisecond / (HOUR_TO_MILLIS) % 24)
-        return MainSurfaceModel(hours.toString(), minutes.toString(), seconds.toString())
+        return MainSurfaceModel(hours.toString(), minutes.toString(), seconds.toString(), true)
     }
 
     companion object {

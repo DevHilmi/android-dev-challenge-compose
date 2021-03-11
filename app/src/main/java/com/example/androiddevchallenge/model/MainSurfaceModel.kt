@@ -1,3 +1,8 @@
 package com.example.androiddevchallenge.model
 
-data class MainSurfaceModel(var hour: String, var minute: String, var second: String)
+data class MainSurfaceModel(
+    var hour: String,
+    var minute: String,
+    var second: String,
+    var running: Boolean
+)
