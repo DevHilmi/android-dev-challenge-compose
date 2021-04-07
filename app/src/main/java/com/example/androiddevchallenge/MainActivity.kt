@@ -34,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.androiddevchallenge.model.MainSurfaceModel
 import com.example.androiddevchallenge.ui.theme.MyTheme
@@ -156,18 +157,22 @@ fun countDownChooserText(countDownType: CountDownType): LazyListState {
             CountDownType.SECONDS -> 60
         }
         val countdownSymbol: String = when (countDownType) {
-            CountDownType.HOURS -> "hour"
-            CountDownType.MINUTES -> "min"
-            CountDownType.SECONDS -> "second"
+            CountDownType.HOURS -> "h"
+            CountDownType.MINUTES -> "m"
+            CountDownType.SECONDS -> "s"
         }
         Row {
             LazyColumn(
                 modifier = Modifier
-                    .height(16.dp),
+                    .height(50.dp),
                 state = listState
             ) {
                 items(countdownLimit) { index ->
-                    Text(text = index.toString())
+                    Text(
+                        text = index.toString(),
+                        fontSize = 30.sp,
+                        modifier = Modifier.padding(8.dp)
+                    )
                 }
             }
 
@@ -175,7 +180,7 @@ fun countDownChooserText(countDownType: CountDownType): LazyListState {
                 listState.scrollToItem(listState.firstVisibleItemIndex, 16)
             }
 
-            Text(text = countdownSymbol)
+            Text(text = countdownSymbol, fontSize = 24.sp)
         }
     }
     return listState
